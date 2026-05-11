@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -75,9 +76,14 @@ fun FloatingNavBar(
                     ambientColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.08f),
                     spotColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f)
                 )
+                .border(
+                    width = 0.8.dp,
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.55f),
+                    shape = RoundedCornerShape(6.dp)
+                )
                 .clip(RoundedCornerShape(6.dp))
                 .background(MaterialTheme.colorScheme.surface)
-                .padding(horizontal = 8.dp, vertical = 10.dp),
+                .padding(horizontal = 8.dp, vertical = 6.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -121,14 +127,6 @@ private fun NavBarItem(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        // Animated indicator bar above icon
-        Box(
-            modifier = Modifier
-                .width(indicatorWidth)
-                .height(2.dp)
-                .clip(RoundedCornerShape(1.dp))
-                .background(MaterialTheme.colorScheme.primary)
-        )
 
         Icon(
             imageVector = if (isSelected) item.selectedIcon else item.unselectedIcon,
@@ -137,13 +135,21 @@ private fun NavBarItem(
             modifier = Modifier.size(22.dp)
         )
 
-        // Label: always visible but bold/primary when selected
         Text(
             text = item.label,
             fontSize = 10.sp,
             fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
             color = iconColor,
             maxLines = 1
+        )
+
+        // Animated indicator bar below label
+        Box(
+            modifier = Modifier
+                .width(indicatorWidth)
+                .height(2.dp)
+                .clip(RoundedCornerShape(1.dp))
+                .background(MaterialTheme.colorScheme.primary)
         )
     }
 }
