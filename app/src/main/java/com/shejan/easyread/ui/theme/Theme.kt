@@ -12,40 +12,45 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val LightColorScheme = lightColorScheme(
-    primary          = Primary,
-    onPrimary        = Surface,
-    primaryContainer = PrimaryLight,
+    primary            = Primary,
+    onPrimary          = Surface,
+    primaryContainer   = PrimaryLight,
     onPrimaryContainer = OnSurface,
-    background       = Background,
-    onBackground     = OnSurface,
-    surface          = Surface,
-    onSurface        = OnSurface,
-    surfaceVariant   = SurfaceVar,
-    onSurfaceVariant = OnSurfaceVar,
-    outline          = Outline,
-    error            = Error
+    background         = Background,
+    onBackground       = OnSurface,
+    surface            = Surface,
+    onSurface          = OnSurface,
+    surfaceVariant     = SurfaceVar,
+    onSurfaceVariant   = OnSurfaceVar,
+    outline            = Outline,
+    error              = Error
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary          = PrimaryDark,
-    onPrimary        = OnSurfaceDark,
-    primaryContainer = PrimaryLightDark,
+    primary            = PrimaryDark,
+    onPrimary          = OnSurfaceDark,
+    primaryContainer   = PrimaryLightDark,
     onPrimaryContainer = OnSurfaceDark,
-    background       = BackgroundDark,
-    onBackground     = OnSurfaceDark,
-    surface          = SurfaceDark,
-    onSurface        = OnSurfaceDark,
-    surfaceVariant   = SurfaceVarDark,
-    onSurfaceVariant = OnSurfaceVarDark,
-    outline          = OutlineDark,
-    error            = ErrorDark
+    background         = BackgroundDark,
+    onBackground       = OnSurfaceDark,
+    surface            = SurfaceDark,
+    onSurface          = OnSurfaceDark,
+    surfaceVariant     = SurfaceVarDark,
+    onSurfaceVariant   = OnSurfaceVarDark,
+    outline            = OutlineDark,
+    error              = ErrorDark
 )
 
 @Composable
 fun EasyReadTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themePreference: ThemePreference = ThemePreference.SYSTEM,
     content: @Composable () -> Unit
 ) {
+    val darkTheme = when (themePreference) {
+        ThemePreference.LIGHT  -> false
+        ThemePreference.DARK   -> true
+        ThemePreference.SYSTEM -> isSystemInDarkTheme()
+    }
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     val view = LocalView.current

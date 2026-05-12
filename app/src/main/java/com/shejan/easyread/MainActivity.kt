@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,21 +30,26 @@ import com.shejan.easyread.ui.home.HomeScreen
 import com.shejan.easyread.ui.library.LibraryScreen
 import com.shejan.easyread.ui.settings.SettingsScreen
 import com.shejan.easyread.ui.theme.EasyReadTheme
+import com.shejan.easyread.ui.theme.ThemeViewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val themeViewModel: ThemeViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            EasyReadTheme {
-                EasyReadApp()
+            val themePreference by themeViewModel.theme.collectAsState()
+            EasyReadTheme(themePreference = themePreference) {
+                EasyReadApp(themeViewModel = themeViewModel)
             }
         }
     }
 }
 
 @Composable
-private fun EasyReadApp() {
+private fun EasyReadApp(themeViewModel: ThemeViewModel) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route ?: "home"
@@ -86,7 +93,6 @@ private fun EasyReadApp() {
             ) {
                 composable("home") {
                     HomeScreen(onPdfClick = { pdf ->
-                        // Navigate to reader — encode URI safely
                         val encoded = java.net.URLEncoder.encode(pdf.uri, "UTF-8")
                         navController.navigate("reader/$encoded")
                     })
@@ -101,7 +107,7 @@ private fun EasyReadApp() {
                     CreateScreen()
                 }
                 composable("settings") {
-                    SettingsScreen()
+                    SettingsScreen(themeViewModel = themeViewModel)
                 }
                 // PDF reader — added later
                 composable("reader/{fileUri}") { _ ->
