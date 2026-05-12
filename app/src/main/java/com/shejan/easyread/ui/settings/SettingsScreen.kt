@@ -22,8 +22,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BrightnessAuto
+import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -114,6 +118,32 @@ fun SettingsScreen(
                     description = "Always use dark mode",
                     selected   = currentTheme == ThemePreference.DARK,
                     onClick    = { themeViewModel.setTheme(ThemePreference.DARK) }
+                )
+            }
+
+            // ── About section ─────────────────────────────────────────────────
+            SettingsSectionLabel("About")
+
+            SettingsCard {
+                NavLinkRow(
+                    icon        = Icons.Outlined.Shield,
+                    label       = "Privacy Policy",
+                    description = "How we handle your data",
+                    onClick     = { /* TODO */ }
+                )
+                RowDivider()
+                NavLinkRow(
+                    icon        = Icons.Outlined.Person,
+                    label       = "About Developer",
+                    description = "Meet the person behind EasyRead",
+                    onClick     = { /* TODO */ }
+                )
+                RowDivider()
+                NavLinkRow(
+                    icon        = Icons.Outlined.Info,
+                    label       = "Version Info",
+                    description = "App version and build details",
+                    onClick     = { /* TODO */ }
                 )
             }
 
@@ -245,6 +275,65 @@ private fun ThemeOptionRow(
                 )
         )
         Spacer(Modifier.width(2.dp))
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Nav link row (chevron-style, no radio dot)
+// ─────────────────────────────────────────────────────────────────────────────
+@Composable
+private fun NavLinkRow(
+    icon: ImageVector,
+    label: String,
+    description: String,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        // Icon box
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(6.dp))
+                .background(MaterialTheme.colorScheme.surfaceVariant),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = label,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+
+        // Text
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text  = label,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text  = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+
+        // Chevron
+        Icon(
+            imageVector = Icons.Outlined.ChevronRight,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(18.dp)
+        )
     }
 }
 
