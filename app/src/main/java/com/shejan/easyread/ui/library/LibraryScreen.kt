@@ -9,13 +9,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.shejan.easyread.model.PdfFile
 
 @Composable
 fun LibraryScreen(onPdfClick: (PdfFile) -> Unit) {
     Scaffold(containerColor = MaterialTheme.colorScheme.background) { padding ->
         Box(
-            modifier = Modifier.fillMaxSize().padding(padding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(bottom = 80.dp),
             contentAlignment = Alignment.Center
         ) {
             Text("Library — coming soon", style = MaterialTheme.typography.bodyLarge)

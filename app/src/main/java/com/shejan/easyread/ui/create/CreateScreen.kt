@@ -9,12 +9,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun CreateScreen() {
     Scaffold(containerColor = MaterialTheme.colorScheme.background) { padding ->
         Box(
-            modifier = Modifier.fillMaxSize().padding(padding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(bottom = 80.dp),
             contentAlignment = Alignment.Center
         ) {
             Text("Create / Import — coming soon", style = MaterialTheme.typography.bodyLarge)

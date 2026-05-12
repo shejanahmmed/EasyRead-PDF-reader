@@ -38,7 +38,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Fully transparent system bars
         enableEdgeToEdge()
+
         setContent {
             val themePreference by themeViewModel.theme.collectAsState()
             EasyReadTheme(themePreference = themePreference) {
@@ -60,6 +63,7 @@ private fun EasyReadApp(themeViewModel: ThemeViewModel) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        contentWindowInsets = androidx.compose.foundation.layout.WindowInsets(0, 0, 0, 0),
         bottomBar = {
             AnimatedVisibility(
                 visible = showNavBar,
@@ -80,11 +84,9 @@ private fun EasyReadApp(themeViewModel: ThemeViewModel) {
                 )
             }
         }
-    ) { innerPadding ->
+    ) { _ ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = innerPadding.calculateBottomPadding()),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.TopStart
         ) {
             NavHost(
