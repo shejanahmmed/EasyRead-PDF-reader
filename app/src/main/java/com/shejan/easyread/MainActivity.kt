@@ -26,6 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.shejan.easyread.ui.components.FloatingNavBar
 import com.shejan.easyread.ui.create.CreateScreen
+import com.shejan.easyread.ui.home.AllFilesScreen
 import com.shejan.easyread.ui.home.HomeScreen
 import com.shejan.easyread.ui.library.LibraryScreen
 import com.shejan.easyread.ui.search.SearchScreen
@@ -95,10 +96,18 @@ private fun EasyReadApp(themeViewModel: ThemeViewModel) {
                 startDestination = "home"
             ) {
                 composable("home") {
-                    HomeScreen(onPdfClick = { pdf ->
-                        val encoded = java.net.URLEncoder.encode(pdf.uri, "UTF-8")
-                        navController.navigate("reader/$encoded")
-                    })
+                    HomeScreen(
+                        onPdfClick = { pdf ->
+                            val encoded = java.net.URLEncoder.encode(pdf.uri, "UTF-8")
+                            navController.navigate("reader/$encoded")
+                        },
+                        onNavigate = { route ->
+                            navController.navigate(route)
+                        }
+                    )
+                }
+                composable("all_files") {
+                    AllFilesScreen()
                 }
                 composable("library") {
                     LibraryScreen(onPdfClick = { pdf ->
