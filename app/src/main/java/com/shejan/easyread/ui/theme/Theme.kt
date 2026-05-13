@@ -1,45 +1,28 @@
 package com.shejan.easyread.ui.theme
 
 import android.app.Activity
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val LightColorScheme = lightColorScheme(
-    primary            = Primary,
-    onPrimary          = Surface,
-    primaryContainer   = PrimaryLight,
-    onPrimaryContainer = OnSurface,
-    background         = Background,
-    onBackground       = OnSurface,
-    surface            = Surface,
-    onSurface          = OnSurface,
-    surfaceVariant     = SurfaceVar,
-    onSurfaceVariant   = OnSurfaceVar,
-    outline            = Outline,
-    error              = Error
-)
-
-private val DarkColorScheme = darkColorScheme(
-    primary            = PrimaryDark,
-    onPrimary          = OnSurfaceDark,
-    primaryContainer   = PrimaryLightDark,
-    onPrimaryContainer = OnSurfaceDark,
-    background         = BackgroundDark,
-    onBackground       = OnSurfaceDark,
-    surface            = SurfaceDark,
-    onSurface          = OnSurfaceDark,
-    surfaceVariant     = SurfaceVarDark,
-    onSurfaceVariant   = OnSurfaceVarDark,
-    outline            = OutlineDark,
-    error              = ErrorDark
-)
+// Animate a single color between light/dark targets
+@Composable
+private fun animThemeColor(dark: Boolean, darkColor: Color, lightColor: Color): Color {
+    val color by animateColorAsState(
+        targetValue   = if (dark) darkColor else lightColor,
+        animationSpec = tween(durationMillis = 150),
+        label         = "theme_color"
+    )
+    return color
+}
 
 @Composable
 fun EasyReadTheme(
@@ -51,21 +34,36 @@ fun EasyReadTheme(
         ThemePreference.DARK   -> true
         ThemePreference.SYSTEM -> isSystemInDarkTheme()
     }
-    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+
+    // ── Animate every color token so theme changes are smooth, not flashy ──
+    val animatedColorScheme = lightColorScheme(
+        primary            = animThemeColor(darkTheme, PrimaryDark,       Primary),
+        onPrimary          = animThemeColor(darkTheme, OnSurfaceDark,      Surface),
+        primaryContainer   = animThemeColor(darkTheme, PrimaryLightDark,   PrimaryLight),
+        onPrimaryContainer = animThemeColor(darkTheme, OnSurfaceDark,      OnSurface),
+        background         = animThemeColor(darkTheme, BackgroundDark,     Background),
+        onBackground       = animThemeColor(darkTheme, OnSurfaceDark,      OnSurface),
+        surface            = animThemeColor(darkTheme, SurfaceDark,        Surface),
+        onSurface          = animThemeColor(darkTheme, OnSurfaceDark,      OnSurface),
+        surfaceVariant     = animThemeColor(darkTheme, SurfaceVarDark,     SurfaceVar),
+        onSurfaceVariant   = animThemeColor(darkTheme, OnSurfaceVarDark,   OnSurfaceVar),
+        outline            = animThemeColor(darkTheme, OutlineDark,        Outline),
+        error              = animThemeColor(darkTheme, ErrorDark,          Error)
+    )
 
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
             WindowCompat.getInsetsController(window, view).apply {
-                isAppearanceLightStatusBars = !darkTheme
+                isAppearanceLightStatusBars     = !darkTheme
                 isAppearanceLightNavigationBars = !darkTheme
             }
         }
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = animatedColorScheme,
         typography  = EasyReadTypography,
         shapes      = EasyReadShapes,
         content     = content
