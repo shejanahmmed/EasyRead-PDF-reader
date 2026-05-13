@@ -50,7 +50,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -76,6 +79,7 @@ fun SettingsScreen(
 ) {
     val currentTheme by themeViewModel.theme.collectAsState()
     var showVersionDialog by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -128,7 +132,12 @@ fun SettingsScreen(
                         label       = "System default",
                         description = "Follows your device theme",
                         selected    = currentTheme == ThemePreference.SYSTEM,
-                        onClick     = { themeViewModel.setTheme(ThemePreference.SYSTEM) }
+                        onClick     = { 
+                            scope.launch {
+                                delay(150)
+                                themeViewModel.setTheme(ThemePreference.SYSTEM)
+                            }
+                        }
                     )
                     RowDivider()
                     ThemeOptionRow(
@@ -136,7 +145,12 @@ fun SettingsScreen(
                         label       = "Light",
                         description = "Always use light mode",
                         selected    = currentTheme == ThemePreference.LIGHT,
-                        onClick     = { themeViewModel.setTheme(ThemePreference.LIGHT) }
+                        onClick     = { 
+                            scope.launch {
+                                delay(150)
+                                themeViewModel.setTheme(ThemePreference.LIGHT)
+                            }
+                        }
                     )
                     RowDivider()
                     ThemeOptionRow(
@@ -144,7 +158,12 @@ fun SettingsScreen(
                         label       = "Dark",
                         description = "Always use dark mode",
                         selected    = currentTheme == ThemePreference.DARK,
-                        onClick     = { themeViewModel.setTheme(ThemePreference.DARK) }
+                        onClick     = { 
+                            scope.launch {
+                                delay(150)
+                                themeViewModel.setTheme(ThemePreference.DARK)
+                            }
+                        }
                     )
                 }
 
