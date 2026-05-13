@@ -116,7 +116,12 @@ private fun EasyReadApp(themeViewModel: ThemeViewModel) {
                     })
                 }
                 composable("search") {
-                    SearchScreen()
+                    SearchScreen(
+                        onPdfClick = { pdf ->
+                            val encoded = java.net.URLEncoder.encode(pdf.uri, "UTF-8")
+                            navController.navigate("reader/$encoded")
+                        }
+                    )
                 }
                 composable("create") {
                     CreateScreen()
