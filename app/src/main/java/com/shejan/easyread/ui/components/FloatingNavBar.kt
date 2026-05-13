@@ -22,10 +22,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LibraryBooks
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.LibraryBooks
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -51,6 +53,7 @@ data class NavItem(
 val navItems = listOf(
     NavItem("Home",     "home",     Icons.Filled.Home,         Icons.Outlined.Home),
     NavItem("Library",  "library",  Icons.Filled.LibraryBooks, Icons.Outlined.LibraryBooks),
+    NavItem("Search",   "search",   Icons.Filled.Search,       Icons.Outlined.Search),
     NavItem("Create",   "create",   Icons.Filled.Add,          Icons.Outlined.Add),
     NavItem("Settings", "settings", Icons.Filled.Settings,     Icons.Outlined.Settings)
 )

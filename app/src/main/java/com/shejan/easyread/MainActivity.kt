@@ -28,6 +28,7 @@ import com.shejan.easyread.ui.components.FloatingNavBar
 import com.shejan.easyread.ui.create.CreateScreen
 import com.shejan.easyread.ui.home.HomeScreen
 import com.shejan.easyread.ui.library.LibraryScreen
+import com.shejan.easyread.ui.search.SearchScreen
 import com.shejan.easyread.ui.settings.SettingsScreen
 import com.shejan.easyread.ui.theme.EasyReadTheme
 import com.shejan.easyread.ui.theme.ThemeViewModel
@@ -104,6 +105,9 @@ private fun EasyReadApp(themeViewModel: ThemeViewModel) {
                         val encoded = java.net.URLEncoder.encode(pdf.uri, "UTF-8")
                         navController.navigate("reader/$encoded")
                     })
+                }
+                composable("search") {
+                    SearchScreen()
                 }
                 composable("create") {
                     CreateScreen()
